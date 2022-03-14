@@ -1,0 +1,63 @@
+#==================================== 
+Sample configuration file for Fine mapping using FINEMAP
+#==================================== 
+
+## Input GWAS file (we support hg19 coordinates)
+## for hg38 based GWAS files, we request users to convert to hg19 coordinates
+## using liftover tool
+InpGWASFile=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2020_IQTL_HiChIP/Data/GWAS_Immune_Studies/T1D_32005708/GCST010681_buildGRCh37.tsv
+
+## output directory to store the fine mapping results
+OutDir=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2021_Nikhil_eQTL/Results/Finemap_GWAS/T1D_32005708
+
+## column containing the chromosome name in the GWAS input file
+chrcol=1
+
+## column containing the SNP position in the GWAS input file (hg19 coordinates)
+poscol=2
+
+## column containing the p-value in the GWAS input file
+pvalcol=8
+
+## column containing the allele frequency information in the GWAS input file
+afcol=5
+
+## column containing the beta information in the GWAS input file
+betacol=6
+
+## column containing the standard error information in the GWAS input file
+secol=7
+
+## region spanning significant GWAS SNPs which will be used for fine mapping analysis
+## we use 1 Mb, means 1 Mb region surrounding a GWAS SNP (500 Kb either side) will be used
+OFFSET=1000000
+
+## ldstore executable
+## check LDSTORE2 from http://www.christianbenner.com/
+ldstoreexec=/home/sourya/packages/ldstore/ldstore_v2.0_x86_64/ldstore_v2.0_x86_64
+
+## finemap executable
+## check FINEMAP from http://www.christianbenner.com/
+finemapexec=/home/sourya/packages/FINEMAP/finemap_v1.4_x86_64/finemap_v1.4_x86_64
+
+## directory storing 1000G data
+## PLINK formatted files
+GENOTYPEDIR=/mnt/BioAdHoc/Groups/vd-vijay/sourya/genomes/1000G_Phase3_Genotype/ALL
+
+## Number of samples for this genotype data
+## check the file "all_phase3.psam" in the parent directory (wc -l) to see the number of samples
+samplecount=2504	
+
+## number of causal SNPs to be tested for fine mapping
+NUMCAUSALSNP=10
+
+## number of threads to be used
+NUMTHREAD=8
+
+## locuszoom Executable
+## we are not using it for the moment
+## so user can skip this parameter
+# LocusZoomExec=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Packages/LocusZoom/locuszoom/bin/locuszoom
+LocusZoomExec=
+
+
