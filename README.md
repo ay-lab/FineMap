@@ -1,15 +1,15 @@
 # FineMap
 
-Fine mapping pipeline 
+Fine mapping of GWAS summary statistics
 ----------------------
+
 Sourya Bhattacharyya
 
 La Jolla Institute for Immunology, La Jolla, CA 92037, USA
 
-Fine mapping of the GWAS summary statistics.
+----------------------
 
-Implements a wrapper for the FINEMAP package 
-(http://www.christianbenner.com/)
+Implements a wrapper for the FINEMAP package (http://www.christianbenner.com/), to generate the fine mapped variants corresponding to an input GWAS summary statistics
 
 Note: Currently the package supports GWAS files with respect to the reference genome hg19 
 
