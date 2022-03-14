@@ -3,6 +3,7 @@
 Fine mapping pipeline 
 ----------------------
 Sourya Bhattacharyya
+
 La Jolla Institute for Immunology, La Jolla, CA 92037, USA
 
 Fine mapping of the GWAS summary statistics.
@@ -39,5 +40,18 @@ check the folder "sss"
 FINAL_summary_credible_set.txt : File containing the GWAS loci, credible causal sets and the corresponding SNPs.
 
 FINAL_top_snp_credible_set.txt: All the SNPs listed in the credible causal sets. 
+
+
+Contact
+==========
+
+For any queries, please create an issue and we'll respond. Otherwise, please e-mail
+
+Sourya Bhattacharyya: sourya@lji.org
+
+Ferhat Ay: ferhatay@lji.org
+
+
+
 
 
