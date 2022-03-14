@@ -22,11 +22,10 @@ Running the script
 
 First edit the configuration file (configfile).
 
-## Note: the pipeline supports using LocusZoom (http://locuszoom.org/) to plot every fine mapped 
-GWAS loci. However, execution of LocusZoom takes a long time. So, we recommend to not use it during fine 
-mapping, but use it separately to plot selected fine mapped GWAS loci.
+***Note: the pipeline supports using LocusZoom (http://locuszoom.org/) to plot every fine mapped GWAS loci. However, execution of LocusZoom takes a long time. So, we recommend to not use it during fine mapping, but use it separately to plot selected fine mapped GWAS loci.
 
 Once the configuration file is edited, run the script 
+
 qsub_finemap_job.sh
 
 It will invoke the finemap executable along with the corresponding configuration file.
