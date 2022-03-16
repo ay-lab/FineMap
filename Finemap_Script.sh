@@ -57,6 +57,9 @@ do
 			if [ $param == "betacol" ]; then
 				betacol=$paramval
 			fi
+			if [ $param == "ORcol" ]; then
+				ORcol=$paramval
+			fi			
 			if [ $param == "secol" ]; then
 				secol=$paramval
 			fi
@@ -101,6 +104,7 @@ echo 'poscol : '$poscol >> $ParameterFile
 echo 'pvalcol : '$pvalcol >> $ParameterFile
 echo 'afcol : '$afcol >> $ParameterFile
 echo 'betacol : '$betacol >> $ParameterFile
+echo 'ORcol : '$ORcol >> $ParameterFile
 echo 'secol : '$secol >> $ParameterFile
 echo 'OFFSET : '$OFFSET >> $ParameterFile
 echo 'ldstoreexec : '$ldstoreexec >> $ParameterFile
@@ -119,6 +123,24 @@ cd $currscriptdir
 GWASRegionCodeExec=$currscriptdir'/Extract_GWAS_Regions.R'
 LDStoreTestCodeExec=$currscriptdir'/Check_SNPs_Input_Ref.R'
 SummaryCodeExec=$currscriptdir'/Summary_FINEMAP_Output.R'
+ConvertGWASCodeExec=$currscriptdir'/Convert_GWAS_Input.R'
+
+##===================
+## check if the input GWAS file does not have beta column
+## but have odds ratio column
+## in such a case, estimate beta from the odd ratio
+## and create a new GWAS file
+## and update the beta column
+
+if [[ $betacol == "" && $ORcol != "" ]]; then
+	tempGWASFile=${BaseOutDir_GWAS}'/temp_GWAS_input.txt'
+	Rscript $ConvertGWASCodeExec $InpGWASFile $tempGWASFile $ORcol
+	betacol=`awk '{if (NR==1) {print NF}}' $tempGWASFile`
+	InpGWASFile=$tempGWASFile	
+	echo 'beta column is not provoded - updated beta column : '$betacol
+	echo 'updated GWAS file : '$tempGWASFile
+fi
+##===================
 
 ## this folder will contain the inputs formatted for FINEMAP 
 FINEMAPInpDir=$BaseOutDir_GWAS'/FINEMAP_INPUT'
@@ -169,11 +191,11 @@ while [ 1 == 1 ]; do
 
 	## get the chromosome
 	awk '{if (NR==2) {print $0}}' ${gwasfile} > $tempfile	
-	currchr=`awk '{if (NR==1) {print $1}}' ${tempfile}`
+	currchr=`awk -v C="$chrcol" '{if (NR==1) {print $C}}' ${tempfile}`
 	echo 'current chromosome : '$currchr >> $logfile
 	## get the chromosome number
 	sed -i 's/chr//g' ${tempfile}
-	currchrnum=`awk '{if (NR==1) {print $1}}' ${tempfile}`
+	currchrnum=`awk -v C="$chrcol" '{if (NR==1) {print $C}}' ${tempfile}`
 	echo 'current chromosome number : '$currchrnum >> $logfile
 
 	## reference 1000G genotypes - variants are referred by chrNum:pos
@@ -184,10 +206,15 @@ while [ 1 == 1 ]; do
 
 	## use chromosome:position format for variant ID
 	## this file will also be useful for FINEMAP
-	## note: 6th field requires MAF - so use < 0.5 and convert the allele frequency if required
-	## space separated file
+	## Note: output file is a space separated file
+	## Note: if allele frequency column (afcol) is provided, insert MAF (< 0.5) and convert the allele frequency if required
+	## otherwise, use a dummy value like 0.1
 	echo "rsid chromosome position maf beta se" > ${finemap_z_file}
-	awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v F="$afcol" -v B="$betacol" -v E="$secol" '{if (NR>1) {if ($F>0.5) {f=(1-$F)} else {f=$F}; print n":"$S" "n" "$S" "f" "$B" "$E}}'  $gwasfile >> ${finemap_z_file}	
+	if [[ $afcol != "" ]]; then
+		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v F="$afcol" -v B="$betacol" -v E="$secol" '{if (NR>1) {if ($F>0.5) {f=(1-$F)} else {f=$F}; print n":"$S" "n" "$S" "f" "$B" "$E}}'  $gwasfile >> ${finemap_z_file}	
+	else
+		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v B="$betacol" -v E="$secol" '{if (NR>1) {print n":"$S" "n" "$S" 0.1 "$B" "$E}}' $gwasfile >> ${finemap_z_file}	
+	fi
 
 	##========= before running LDStore, check if these SNPs are present in the reference genotype (PLINK) output
 	##========= otherwise filter those entries
