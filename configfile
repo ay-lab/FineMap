@@ -11,21 +11,32 @@ InpGWASFile=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2020_IQTL_HiChIP/Data/
 OutDir=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2021_Nikhil_eQTL/Results/Finemap_GWAS/T1D_32005708
 
 ## column containing the chromosome name in the GWAS input file
+## mandatory
 chrcol=1
 
 ## column containing the SNP position in the GWAS input file (hg19 coordinates)
+## mandatory
 poscol=2
 
 ## column containing the p-value in the GWAS input file
+## mandatory
 pvalcol=8
 
 ## column containing the allele frequency information in the GWAS input file
+## if not provided, estimate a dummy minor allele frequency - say 0.1
 afcol=5
 
 ## column containing the beta information in the GWAS input file
+## if not provided, keep empty
 betacol=6
 
+## if the above mentioned beta column is not provided in the GWAS input file
+## mention the column containing the odd ratio
+## if betacol is provided, keep this field empty
+ORcol=
+
 ## column containing the standard error information in the GWAS input file
+## mandatory
 secol=7
 
 ## region spanning significant GWAS SNPs which will be used for fine mapping analysis
