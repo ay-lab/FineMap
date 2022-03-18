@@ -17,6 +17,15 @@ For GWAS files with hg38 reference genome configuration, users are requested to 
 the liftover tool (https://genome.ucsc.edu/cgi-bin/hgLiftOver) to convert the genomic coordinates 
 from hg38 to hg19.
 
+Prerequisites
+==============
+
+1. Download the 1000G Genotype data (we've used hg19 as the reference genome). Follow the tutorial: https://cran.r-project.org/web/packages/snpsettest/vignettes/reference_1000Genomes.html. The path containing this 1000G genotype data needs to be provided as a configuration parameter (check the parameter GENOTYPEDIR)
+2. Install these R libraries: data.table, dplyr, GenomicRanges, gridExtra
+3. Download the package LDSTORE2 (binary executable) from http://www.christianbenner.com/. The path of this executable needs to be provided as a configuration parameter (check the parameter ldstoreexec)
+4. Download the package FINEMAP (binary executable) from http://www.christianbenner.com/. The path of this executable needs to be provided as a configuration parameter (check the parameter finemapexec)
+
+
 Running the script
 ==================
 
