@@ -1,14 +1,14 @@
 #==================================== 
-Sample configuration file for Fine mapping using FINEMAP
+#Sample configuration file for Fine mapping using FINEMAP
 #==================================== 
 
 ## Input GWAS file (we support hg19 coordinates)
 ## for hg38 based GWAS files, we request users to convert to hg19 coordinates
 ## using liftover tool
-InpGWASFile=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2020_IQTL_HiChIP/Data/GWAS_Immune_Studies/T1D_32005708/GCST010681_buildGRCh37.tsv
+InpGWASFile=/home/sourya/GWAS_Immune_Studies/T1D_32005708/GCST010681_buildGRCh37.tsv
 
 ## output directory to store the fine mapping results
-OutDir=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Projects/2021_Nikhil_eQTL/Results/Finemap_GWAS/T1D_32005708
+OutDir=/home/sourya/Results/Finemap_GWAS/T1D_32005708
 
 ## column containing the chromosome name in the GWAS input file
 ## mandatory
@@ -23,11 +23,13 @@ poscol=2
 pvalcol=8
 
 ## column containing the allele frequency information in the GWAS input file
-## if not provided, estimate a dummy minor allele frequency - say 0.1
+## if not provided, the fine mapping code inserts a dummy minor allele frequency - say 0.1
+## better to provide this parameter if available
 afcol=5
 
 ## column containing the beta information in the GWAS input file
 ## if not provided, keep empty
+## Note: either "betacol" or "ORcol" needs to be provided
 betacol=6
 
 ## if the above mentioned beta column is not provided in the GWAS input file
@@ -57,18 +59,20 @@ GENOTYPEDIR=/mnt/BioAdHoc/Groups/vd-vijay/sourya/genomes/1000G_Phase3_Genotype/A
 
 ## Number of samples for this genotype data
 ## check the file "all_phase3.psam" in the parent directory (wc -l) to see the number of samples
+## for 1000G reference genotye (hg19), this is the sample size, and user does not need to change this parameter.
 samplecount=2504	
 
 ## number of causal SNPs to be tested for fine mapping
+## better to keep it as it is
 NUMCAUSALSNP=10
 
 ## number of threads to be used
+## depends on the computational resource of the user
 NUMTHREAD=8
 
 ## locuszoom Executable
 ## we are not using it for the moment
 ## so user can skip this parameter
-# LocusZoomExec=/mnt/BioAdHoc/Groups/vd-vijay/sourya/Packages/LocusZoom/locuszoom/bin/locuszoom
 LocusZoomExec=
 
 
