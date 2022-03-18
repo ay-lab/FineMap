@@ -209,11 +209,12 @@ while [ 1 == 1 ]; do
 	## Note: output file is a space separated file
 	## Note: if allele frequency column (afcol) is provided, insert MAF (< 0.5) and convert the allele frequency if required
 	## otherwise, use a dummy value like 0.1
+	## also check the standard error - if 0, insert a small floating point positive value
 	echo "rsid chromosome position maf beta se" > ${finemap_z_file}
 	if [[ $afcol != "" ]]; then
-		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v F="$afcol" -v B="$betacol" -v E="$secol" '{if (NR>1) {if ($F>0.5) {f=(1-$F)} else {f=$F}; print n":"$S" "n" "$S" "f" "$B" "$E}}'  $gwasfile >> ${finemap_z_file}	
+		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v F="$afcol" -v B="$betacol" -v E="$secol" '{if (NR>1) {if ($F>0.5) {f=(1-$F)} else {f=$F}; if ($E==0) {e=0.0001} else {e=$E}; print n":"$S" "n" "$S" "f" "$B" "e}}' $gwasfile >> ${finemap_z_file}	
 	else
-		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v B="$betacol" -v E="$secol" '{if (NR>1) {print n":"$S" "n" "$S" 0.1 "$B" "$E}}' $gwasfile >> ${finemap_z_file}	
+		awk -v n="${currchrnum}" -v C="$chrcol" -v S="$poscol" -v B="$betacol" -v E="$secol" '{if (NR>1) {if ($E==0) {e=0.0001} else {e=$E}; print n":"$S" "n" "$S" 0.1 "$B" "e}}' $gwasfile >> ${finemap_z_file}	
 	fi
 
 	##========= before running LDStore, check if these SNPs are present in the reference genotype (PLINK) output
@@ -234,7 +235,7 @@ while [ 1 == 1 ]; do
 	##========= write the master file entries
 	outbcorfile=${FINEMAPInpDir}'/Region'${i}'.bcor'
 	outldfile=${FINEMAPInpDir}'/Region'${i}'.ld'
-	bdosefile=${FINEMAPInpDir}'/Region'${i}'.bdose'
+	bdosefile=${FINEMAPInpDir}'/Region'${i}'.bdose'	
 	echo ${finemap_z_file}';'${bgenfile}';'${bgenbgifile}';'${outbcorfile}';'${outldfile}';'${samplecount}';'${bdosefile} >> ${Masterfile}
 
 	## now execute ldstore using the generared master file
