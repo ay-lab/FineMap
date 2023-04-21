@@ -1,0 +1,71 @@
+#==================================== 
+## Sample configuration file for Fine mapping eQTLs using FINEMAP
+#==================================== 
+
+##=============
+## fine mapping related parameters
+##=============
+Finemap:
+  ## type of fine-mapping - eQTL / GWAS - keep the entry as it is
+  Study: "eQTL"
+  ## number of causal SNPs to be tested for fine mapping
+  ## better to keep it as it is
+  NUMCAUSALSNP: 10
+  ## number of threads to be used
+  NUMTHREAD: 8
+
+##=============
+## various parameters related to paths / executables
+##=============
+Path:
+  ## output directory to store the fine mapping results
+  OutDir: "/home/sourya/finemap_out"
+  ## ldstore executable
+  ## check LDSTORE2 from http://www.christianbenner.com/
+  ldstoreexec: "/home/sourya/ldstore_v2.0_x86_64"
+  ## finemap executable
+  ## check FINEMAP from http://www.christianbenner.com/
+  finemapexec: "/home/sourya/finemap_v1.4_x86_64"
+  ## directory storing 1000G data
+  ## PLINK formatted files
+  GENOTYPEDIR: "/home/sourya/genomes/1000G_Phase3_Genotype/ALL"
+  ## Number of samples for this genotype data
+  ## check the file "all_phase3.psam" in the parent directory (wc -l) to see the number of samples
+  ## for 1000G reference genotye (hg19), this is the sample size, and user does not need to change this parameter.
+  samplecount: 2504
+
+##=============
+## various parameters related to eQTLs (summary statistics)
+##=============
+Stat:
+  ## input eQTL summary statistics file
+  Filename: "Data/Example_eQTL_data.txt"
+  ## column containing the chromosome name
+  chrCol: 1
+  ## SNP position
+  posCol: 2
+  ## column containing the gene ID (mandatory parameter)
+  geneIDCol: 3
+  ## column containing the gene name
+  geneNameCol: 11
+  ## SNP rsID column
+  rsIDCol: 4
+  ## column containing the p-value
+  pValCol: 5
+  ## column containing the beta
+  ## Note: either "betaCol" or "ORCol" needs to be provided
+  betaCol: 7
+  ## column containing the odds ratio
+  ## mandatory if beta statistics is not provided
+  ## otherwise, can be empty
+  ORCol: 
+  ## column containing the allele frequency information
+  ## if not provided, the fine mapping code inserts a dummy minor allele frequency - say 0.1  
+  AFCol: 
+  ## column containing the standard error
+  SECol: 
+  ## column containing sample size  
+  SampleSizeCol:
+  ## total sample size (an integer) if specified
+  TotalSample: 91
+
